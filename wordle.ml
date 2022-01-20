@@ -44,27 +44,29 @@ let next_line ch =
 let seq_of_file_lines filename = (Seq.unfold next_line) (open_in filename)
 let words = "./words.txt" |> seq_of_file_lines
 
-let print_help () =
-  print_endline "Max two arguments: po*** i";
-  print_endline
-    "First argument: list of letters found at the right place and wildcards";
-  print_endline "Second argument: list of letters found"
+let string_contains_list s lst =
+  lst
+  |> List.map (fun x -> String.contains s x)
+  |> List.fold_left (fun x y -> x && y) true
+
+let get_or arr idx =
+  match Array.get arr idx with el -> el | exception Invalid_argument _ -> "*"
+
+let filter_good_letters letters seq =
+  Seq.filter (fun x -> string_contains_list x letters) seq
+
+let filter_bad_letters letters seq =
+  Seq.filter (fun x -> not (string_contains_list x letters)) seq
+
+let list_of_arr idx arr = get_or arr idx |> String.to_seq |> List.of_seq
 
 let () =
   let argv = Sys.argv in
-  if Array.length argv > 3 then print_help ();
-  if
-    (Array.length argv = 2 || Array.length argv = 3)
-    && String.length argv.(1) = 5
-  then
-    let searched = searched_word_of_pattern argv.(1) in
-    let regex = Str.regexp (regex_of_searched_word searched) in
-    let rec filter_words w s =
-      match s with
-      | [] -> w
-      | c :: tail ->
-          filter_words ((Seq.filter (fun x -> String.contains x c)) w) tail
-    in
-    filter_words words (List.of_seq (String.to_seq argv.(2)))
-    |> Seq.filter (fun x -> Str.string_match regex x 0)
-    |> Seq.iter print_endline
+  let searched = searched_word_of_pattern argv.(1) in
+  let regex = Str.regexp (regex_of_searched_word searched) in
+  print_endline (regex_of_searched_word searched);
+  words
+  |> Seq.filter (fun x -> Str.string_match regex x 0)
+  |> filter_good_letters (list_of_arr 2 argv)
+  |> filter_bad_letters (list_of_arr 3 argv)
+  |> Seq.iter print_endline
