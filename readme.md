@@ -2,11 +2,9 @@
 
 Usage: `wordle po*** i`
 
-First argument is letters where you know the place. Has to be exactly 5 letters. Fill with \* if you don't know. Second arguments is all the letters you don't know the place of, but are in the word.
+First argument is letters where you know the place. Has to be exactly 5 letters. Fill with \* if you don't know. Second arguments is all the letters you don't know the place of, but are in the word. Third arguments is the letters that can't be in the word. Example:
 
-A l'air de pas marcher
 
-Ajouter une liste des lettres "refusées"
 
 ## Making of
 
