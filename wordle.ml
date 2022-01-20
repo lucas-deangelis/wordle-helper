@@ -44,21 +44,26 @@ let next_line ch =
 let seq_of_file_lines filename = (Seq.unfold next_line) (open_in filename)
 let words = "./words.txt" |> seq_of_file_lines
 
-let string_contains_list s lst =
+let string_contains_list_good s lst =
   lst
   |> List.map (fun x -> String.contains s x)
   |> List.fold_left (fun x y -> x && y) true
+
+let string_contains_list_bad s lst =
+  lst
+  |> List.map (fun x -> String.contains s x)
+  |> List.fold_left (fun x y -> x || y) false
 
 let get_or arr idx =
   match Array.get arr idx with el -> el | exception Invalid_argument _ -> ""
 
 let filter_good_letters letters seq =
   if letters = [] then seq
-  else Seq.filter (fun x -> string_contains_list x letters) seq
+  else Seq.filter (fun x -> string_contains_list_good x letters) seq
 
 let filter_bad_letters letters seq =
   if letters = [] then seq
-  else Seq.filter (fun x -> not (string_contains_list x letters)) seq
+  else Seq.filter (fun x -> not (string_contains_list_bad x letters)) seq
 
 let list_of_arr idx arr = get_or arr idx |> String.to_seq |> List.of_seq
 
