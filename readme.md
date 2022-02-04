@@ -85,3 +85,20 @@ Two lists of words:
 I want just one list, sorted: `cat allowed-guesses.txt answers.txt | sort > words.txt`. Could add `| uniq` before `> words.txt`: `cat allowed-guesses.txt answers.txt | sort | uniq > words.txt` but wasn't needed here.
 
 Regexes: Nice for string manipulation, better than doing everthing "by hand". Example in [this commit](https://github.com/lucas-deangelis/wordle-helper/commit/8df9ad383066afe6f1ddb329fc4cd8a98a7aa878). Rely on the platform!
+
+## Ideas to explore
+
+- Put the words inside the binary
+- Take dictionnary as parameter
+- UTF-8 support so it works for all languages? Since I rely on characters this is going to be a fun one
+- Remove dependency on Dune? Or just an alternative.
+
+## To install
+
+You'll need:
+
+- OCaml
+- dune
+- opam
+
+Clone the repo, `dune build` inside. The library used (str) is distributed with the compiler.
