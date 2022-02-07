@@ -28,6 +28,7 @@ let () =
   let regex = Str.regexp (wildcards_to_regex argv.(1)) in
   words
   |> Seq.filter (fun x -> Str.string_match regex x 0)
+  |> Seq.filter (fun x -> String.length x = String.length argv.(1))
   |> filter_letters string_contains_all_characters (list_of_arr 2 argv)
   |> filter_letters string_contains_no_characters (list_of_arr 3 argv)
   |> Seq.iter print_endline
